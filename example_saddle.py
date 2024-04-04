@@ -4,7 +4,7 @@ from sklearn import tree
 import matplotlib.pyplot as plt
 
 # Generate random samples of the saddle function.
-samples = 20
+samples = 100
 data = np.random.uniform(-1, 1, (samples, 2))
 target = [x**2 - y**2 for [x, y] in data]
 
