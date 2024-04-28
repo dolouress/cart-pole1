@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import numpy as np
 import pade
 from sklearn import tree
@@ -41,6 +40,7 @@ target = np.array(target)
 # print("Data array before passing to pade.pade():", data)
 
 # Compute Pade values.
+
 q_table = pade.pade(data, target)
 
 # Translate Pade values to the readable Q-labels.
@@ -62,7 +62,7 @@ model = classifier.fit(data, classes)
 plt.figure(figsize=(12, 8))
 tree.plot_tree(model, feature_names=['horizontal_position', 'velocity', 'angle', 'angular_velocity'], class_names=class_names, filled=True)
 plt.show()
-=======
+
 import time
 
 import numpy as np
@@ -114,4 +114,3 @@ print("Initial Pole Position:", initial_theta[2])
 print("New Pole Position:", new_theta)
 
 
->>>>>>> 7f0729bbbc1a63943882d6a740df2ba71c31763c

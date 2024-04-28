@@ -78,7 +78,9 @@ def pade(data, target, nNeighbours=10):
                 b = 0
 
             # Store the sign of the partial derivative to the Q-table.
-            q_table[idx][dim] = np.sign(b[2])
+            #print(b)
+            q_table[idx][dim] = np.sign(b)
+            #q_table[idx][dim] = np.sign(b)
 
     # Return the Q-table.
     return q_table
