@@ -8,14 +8,14 @@ import pade
 
 errors = []
 
-for itr in range(10):
+for itr in range(1):
     print(itr)
 
     dt = 0.02 # 50 Hz
-    samples = 20 #3000
+    samples = 900
 
     cart = CartPole()
-    cart.reset()  # m
+    cart.reset()
 
     plot_x = np.zeros(samples)
     plot_y = np.zeros(samples)
@@ -27,6 +27,7 @@ for itr in range(10):
 
     for i in range(samples):
         force = random.random() * 200.0 - 100.0
+
         duration = random.random() * 0.5
 
         cart.tag_state()
@@ -34,7 +35,7 @@ for itr in range(10):
         first = True
         t = duration
         while t > 0:
-            cart.tick(dt, force)
+            cart.step(force)
             t -= dt
 
             if first:
@@ -55,11 +56,11 @@ for itr in range(10):
                 first = False
 
     plt.scatter(plot_x, plot_y, c=plot_z, cmap='viridis')
+
     plt.colorbar()
     plt.show()
 
     q_table = pade.pade(data, target_dtheta, nNeighbours=10)
-    print(q_table)
     q_labels = pade.create_q_labels(q_table[:,2:3], ['force'])
 
     classes, class_names = pade.enumerate_q_labels(q_labels)

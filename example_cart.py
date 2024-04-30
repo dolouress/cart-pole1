@@ -3,6 +3,7 @@ import random
 from typing import Optional, Tuple, Union
 
 import numpy as np
+import pygame
 
 import gymnasium as gym
 from gymnasium import logger, spaces
@@ -175,24 +176,43 @@ class CartPole(gym.Env[np.ndarray, Union[int, np.ndarray]]):
         xacc = temp - self.polemass_length * thetaacc * costheta / self.total_mass
 
         if self.kinematics_integrator == "euler":
-            x = x + self.tau * x_dot
+            #x = x + self.tau * x_dot
+
             x_dot = x_dot + self.tau * xacc
             theta = theta + self.tau * theta_dot
+            if theta>=math.pi:
+                theta=theta-2*math.pi
+            if theta<-math.pi:
+                theta=theta+2*math.pi
             theta_dot = theta_dot + self.tau * thetaacc
+            if theta_dot>2*math.pi:
+                theta_dot=2*math.pi
+            if theta_dot<-2*math.pi:
+                theta_dot=-2*math.pi
         else:  # semi-implicit euler
             x_dot = x_dot + self.tau * xacc
             x = x + self.tau * x_dot
             theta_dot = theta_dot + self.tau * thetaacc
+            if theta_dot>360:
+                theta_dot=360
+            if theta_dot<-360:
+                theta_dot=-360
             theta = theta + self.tau * theta_dot
+            if theta>=180:
+                theta=theta-360
+            if theta<-180:
+                theta=theta+360
+
 
         self.state = (x, x_dot, theta, theta_dot)
 
-        terminated = bool(
+        '''terminated = bool(
             x < -self.x_threshold
             or x > self.x_threshold
             or theta < -self.theta_threshold_radians
             or theta > self.theta_threshold_radians
-        )
+        )'''
+        terminated=False
 
         if not terminated:
             if self._sutton_barto_reward:
@@ -254,13 +274,6 @@ class CartPole(gym.Env[np.ndarray, Union[int, np.ndarray]]):
         return np.array(self.state) - np.array(self.tagged_state)
 
     def tick(self, dt: float, force: float):
-        """
-        Update the state of the cart-pole system over a time interval dt with the applied force.
-
-        Args:
-            dt (float): Time interval.
-            force (float): Force applied to the cart.
-        """
         num_steps = int(dt / self.tau)  # Number of steps within the given time interval
         for _ in range(num_steps):
             self.step(force)
