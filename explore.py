@@ -9,9 +9,9 @@ import pade
 errors = []
 
 for itr in range(1):
-    print(itr)
+    # print(itr)
 
-    dt = 0.02 # 50 Hz
+    dt = 0.02  # 50 Hz
     samples = 900
 
     cart = CartPole()
@@ -55,7 +55,7 @@ for itr in range(1):
 
                 first = False
 
-    #print(plot_x)
+    # print(plot_x)
 
     scatter = plt.scatter(plot_x, plot_y, c=plot_z, cmap='viridis', vmin=-100, vmax=100)
     plt.xticks([-180, -90, 0, 90, 180])
@@ -65,25 +65,29 @@ for itr in range(1):
     plt.show()
 
     q_table = pade.pade(data, target_dtheta, nNeighbours=10)
-    q_labels = pade.create_q_labels(q_table[:,2:3], ['force'])
+    q_labels = pade.create_q_labels(q_table[:, 2:3], ['force'])
 
     classes, class_names = pade.enumerate_q_labels(q_labels)
 
     classifier = tree.DecisionTreeClassifier(min_impurity_decrease=0.05)
-    model = classifier.fit(data[:,0:2], classes)
+    model = classifier.fit(data[:, 0:2], classes)
 
     tree_rules = export_text(model, feature_names=['theta', 'dtheta'])
 
-    #for thr in model.tree_.threshold:
+    # for thr in model.tree_.threshold:
     #    if abs(thr) > 50:
     #        errors.append(abs(abs(thr) - 90))
 
-
-    #print("theta dtheta class")
-    #for ([x, y], q) in zip(data[:,0:2], q_labels):
+    # print("theta dtheta class")
+    # for ([x, y], q) in zip(data[:,0:2], q_labels):
     #    print(x, y, q)
+
+    # Convert threshold values from radians to degrees
+    for i, threshold in enumerate(model.tree_.threshold):
+        if threshold != tree._tree.TREE_UNDEFINED:
+            model.tree_.threshold[i] = np.degrees(threshold)
 
     tree.plot_tree(model, feature_names=['theta', 'dtheta'], class_names=class_names, filled=True)
     plt.show()
 
-    print(errors)
+    # print(errors)
