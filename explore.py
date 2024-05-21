@@ -43,8 +43,8 @@ for itr in range(1):
                 (x, dx, theta, dtheta) = cart.state
                 (delta_x, delta_dx, delta_theta, delta_dtheta) = cart.get_tag_diff()
 
-                plot_x[i] = theta
-                plot_y[i] = dtheta
+                plot_x[i] = np.degrees(theta)  # Convert to degrees
+                plot_y[i] = np.degrees(dtheta)  # Convert to degrees
                 plot_z[i] = force
 
                 data[i, 0] = theta0
@@ -55,9 +55,13 @@ for itr in range(1):
 
                 first = False
 
-    plt.scatter(plot_x, plot_y, c=plot_z, cmap='viridis')
+    #print(plot_x)
 
-    plt.colorbar()
+    scatter = plt.scatter(plot_x, plot_y, c=plot_z, cmap='viridis', vmin=-100, vmax=100)
+    plt.xticks([-180, -90, 0, 90, 180])
+    plt.yticks([-360, -180, 0, 180, 360])
+
+    plt.colorbar(ticks=[-100, -50, 0, 50, 100])
     plt.show()
 
     q_table = pade.pade(data, target_dtheta, nNeighbours=10)
