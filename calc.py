@@ -31,11 +31,11 @@ F_vals = [ddot_theta_F.subs({theta: theta_val}) for theta_val in theta_vals]
 
 plt.figure(figsize=(8, 6))
 plt.plot(theta_vals, F_vals, color='blue')
-plt.xlabel(r'$\theta$ ')
-plt.ylabel(r'$\frac{\partial \ddot{\theta}}{\partial F}$')
+plt.xlabel(r'$\theta$', fontsize=15, fontweight='bold', rotation=0, ha='center')
+plt.ylabel(r'$\frac{\partial \ddot{\theta}}{\partial F}$', fontsize=15, fontweight='bold', rotation=1, ha='center', va='center')
 plt.title('Partial Derivative of $\ddot{\\theta}$ with respect to $F$')
-plt.axhline(0, color='black', linewidth=0.5)
-plt.axvline(0, color='black', linewidth=0.5)
+plt.axhline(0, color='black', linewidth=0.9)
+plt.axvline(0, color='black', linewidth=0.9)
 
 # Find where the curve crosses the axes
 crossings = [theta_vals[i] for i in range(len(F_vals)-1) if F_vals[i] * F_vals[i+1] < 0]
