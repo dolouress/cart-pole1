@@ -9,7 +9,7 @@ import pade
 errors = []
 
 for itr in range(1):
-    # print(itr)
+    # print(itr)2
 
     dt = 0.02  # 50 Hz
     samples = 900
@@ -62,8 +62,11 @@ for itr in range(1):
     plt.yticks([-360, -180, 0, 180, 360])
 
     plt.colorbar(ticks=[-100, -50, 0, 50, 100])
+    plt.xlabel(r'$\theta$ (degrees)')
+    plt.ylabel(r'$\dot{\theta}$ (degrees/s)')
     plt.show()
 
+    # Train the qualitative model using PADE
     q_table = pade.pade(data, target_dtheta, nNeighbours=10)
     q_labels = pade.create_q_labels(q_table[:, 2:3], ['force'])
 
@@ -74,13 +77,6 @@ for itr in range(1):
 
     tree_rules = export_text(model, feature_names=['theta', 'dtheta'])
 
-    # for thr in model.tree_.threshold:
-    #    if abs(thr) > 50:
-    #        errors.append(abs(abs(thr) - 90))
-
-    # print("theta dtheta class")
-    # for ([x, y], q) in zip(data[:,0:2], q_labels):
-    #    print(x, y, q)
 
     # Convert threshold values from radians to degrees
     for i, threshold in enumerate(model.tree_.threshold):

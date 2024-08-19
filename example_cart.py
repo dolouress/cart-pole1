@@ -181,14 +181,14 @@ class CartPole(gym.Env[np.ndarray, Union[int, np.ndarray]]):
             x_dot = x_dot + self.tau * xacc
             theta = theta + self.tau * theta_dot
             if theta>=math.pi:
-                theta=theta-2*math.pi
+                theta=theta % math.pi
             if theta<-math.pi:
-                theta=theta+2*math.pi
+                theta=theta % math.pi
             theta_dot = theta_dot + self.tau * thetaacc
             if theta_dot>2*math.pi:
-                theta_dot=2*math.pi
+                theta_dot=theta_dot % 2*math.pi
             if theta_dot<-2*math.pi:
-                theta_dot=-2*math.pi
+                theta_dot= theta_dot % -2*math.pi
         else:  # semi-implicit euler
             x_dot = x_dot + self.tau * xacc
             x = x + self.tau * x_dot
